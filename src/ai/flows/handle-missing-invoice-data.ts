@@ -5,11 +5,11 @@
  *
  * - extractInvoiceData - A function that extracts structured invoice data from a PDF invoice.
  * - ExtractInvoiceDataInput - The input type for the extractInvoiceData function (PDF data URI).
- * - ExtractInvoiceDataOutput - The return type for the extractInvoiceData function (JSON with invoice details and total expenses).
+ * - ExtractInvoiceDataOutput - The return type for the extractInvoiceData function (JSON with invoice details).
  */
 
 import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import {z} from 'zod';
 
 const ExtractInvoiceDataInputSchema = z.object({
   invoiceDataUri: z
@@ -24,7 +24,7 @@ const InvoiceSchema = z.object({
   proveedor: z.string().describe('The name of the vendor.'),
   fecha: z.string().describe('The invoice date in YYYY-MM-DD format.'),
   concepto: z.string().describe('A brief description of the purchase.'),
-  importe: z.number().describe('The total amount of the invoice.'),
+  importe: z.number().describe('The total amount of the invoice. This can be negative for returns or credit notes.'),
   missingFields: z
     .array(z.string())
     .describe('List of fields with low confidence extractions requiring review.')
@@ -33,7 +33,6 @@ const InvoiceSchema = z.object({
 
 const ExtractInvoiceDataOutputSchema = z.object({
   facturas: z.array(InvoiceSchema).describe('An array of extracted invoice details.'),
-  total_gastos: z.number().describe('The sum of all invoice amounts.'),
 });
 export type ExtractInvoiceDataOutput = z.infer<typeof ExtractInvoiceDataOutputSchema>;
 
@@ -51,15 +50,13 @@ Your task is to analyze the provided PDF, identify all individual invoices, and 
 - proveedor: The name of the vendor/supplier.
 - fecha: The date of the invoice in YYYY-MM-DD format.
 - concepto: A brief description of the items or services purchased.
-- importe: The **final total amount** of the invoice. Pay close attention to decimal places and ensure you are extracting the grand total, not a subtotal.
+- importe: The **final total amount** of the invoice. Pay close attention to decimal places and ensure you are extracting the grand total, not a subtotal. For credit notes, returns, or refunds, this value MUST be negative.
 
 If the PDF contains multiple invoices, create a separate JSON object for each.
 
 Handle missing information:
 - If a value for a field cannot be found or read with high confidence, leave it as an empty string ("") for 'proveedor', 'fecha', and 'concepto', and use 0 for 'importe'.
 - In addition, if you are not confident about a field, you MUST add the name of that field (e.g., "importe") to the 'missingFields' array for human review.
-
-After extracting all invoice data, calculate the sum of all 'importe' values and place it in the 'total_gastos' field.
 
 Analyze the following invoice document:
 {{media url=invoiceDataUri}}

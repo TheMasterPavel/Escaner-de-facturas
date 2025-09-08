@@ -24,12 +24,12 @@ import { InvoiceUploadForm } from "@/components/invoice-upload-form";
 import { InvoiceTable } from "@/components/invoice-table";
 import { Logo } from "@/components/logo";
 import { processInvoice } from "@/app/actions";
-import type { InvoiceData } from "@/lib/types";
+import type { InvoiceResponse } from "@/lib/types";
 import { formatCurrency } from "@/lib/utils";
 import { DollarSign, AlertCircle, FileText, AlertTriangle, Download } from "lucide-react";
 
 export default function Home() {
-  const [invoiceData, setInvoiceData] = useState<InvoiceData | null>(null);
+  const [invoiceData, setInvoiceData] = useState<InvoiceResponse | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
