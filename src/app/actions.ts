@@ -26,22 +26,36 @@ export async function processInvoice(
 
     return { data: responseData, error: null };
   } catch (e: any) {
-    console.error('Error processing invoice:', e);
-    // Vercel/Next.js puede anidar el error original. Intentamos acceder a él.
-    const cause = e.cause || e;
-    const errorMessage = cause.message || 'Ocurrió un error desconocido al procesar la factura.';
+    console.error('[SERVER_ACTION_ERROR]', e);
+
+    let errorMessage = 'Ocurrió un error desconocido al procesar la factura.';
     
-    // Extraer un mensaje más específico si es un error de la API de Google
-    if (cause.details) {
+    // Check for Vercel/Next.js specific error structures
+    if (e.message) {
+      errorMessage = e.message;
+    }
+    
+    // Attempt to parse nested error details from Google API or other causes
+    if (e.cause) {
       try {
-        const details = JSON.parse(cause.details);
-        if (details.error?.message) {
-          return { data: null, error: `Error de la API: ${details.error.message}` };
+        // Handle nested stringified JSON
+        if (typeof e.cause === 'string') {
+          const parsedCause = JSON.parse(e.cause);
+          if (parsedCause.error?.message) {
+            errorMessage = `Error de la API: ${parsedCause.error.message}`;
+          }
+        } else if (e.cause.message) {
+           errorMessage = e.cause.message;
         }
       } catch (parseError) {
-         // Si el detalle no es un JSON, usamos el mensaje principal.
-         return { data: null, error: errorMessage };
+         // If parsing fails, stick with the last known error message.
+         console.error('[ERROR_PARSING_CAUSE]', parseError);
       }
+    }
+    
+    // Check for a specific structure often seen in Genkit/Google AI errors
+    if (e.details) {
+       errorMessage = e.details;
     }
 
     return { data: null, error: errorMessage };
