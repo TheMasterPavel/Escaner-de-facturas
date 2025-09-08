@@ -1,11 +1,7 @@
 {
-  "framework": "nextjs",
-  "functions": {
-    "app/api/**/*.js": {
-      "maxDuration": 60
-    },
-    "app/**/*.js": {
-      "maxDuration": 60
+    "functions": {
+        "app/**": {
+            "maxDuration": 60
+        }
     }
-  }
 }
