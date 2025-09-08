@@ -21,10 +21,10 @@ const ExtractInvoiceDataInputSchema = z.object({
 export type ExtractInvoiceDataInput = z.infer<typeof ExtractInvoiceDataInputSchema>;
 
 const InvoiceSchema = z.object({
-  proveedor: z.string().describe('The name of the vendor.').optional(),
-  fecha: z.string().describe('The invoice date in YYYY-MM-DD format.').optional(),
-  concepto: z.string().describe('A brief description of the purchase.').optional(),
-  importe: z.number().describe('The total amount of the invoice.').optional(),
+  proveedor: z.string().describe('The name of the vendor.'),
+  fecha: z.string().describe('The invoice date in YYYY-MM-DD format.'),
+  concepto: z.string().describe('A brief description of the purchase.'),
+  importe: z.number().describe('The total amount of the invoice.'),
   missingFields: z
     .array(z.string())
     .describe('List of fields with low confidence extractions requiring review.')
