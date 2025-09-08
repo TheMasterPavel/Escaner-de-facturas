@@ -22,8 +22,8 @@ export function InvoiceUploadForm({ onSubmit, isProcessing }: InvoiceUploadFormP
       if (selectedFile.type !== "application/pdf") {
         setError("Por favor, sube un archivo PDF.");
         setFile(null);
-      } else if (selectedFile.size > 5 * 1024 * 1024) { // 5MB limit
-        setError("El archivo es demasiado grande (máx 5MB).");
+      } else if (selectedFile.size > 10 * 1024 * 1024) { // 10MB limit
+        setError("El archivo es demasiado grande (máx 10MB).");
         setFile(null);
       } else {
         setFile(selectedFile);
