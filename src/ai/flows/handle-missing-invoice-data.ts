@@ -12,7 +12,7 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const ExtractInvoiceDataInputSchema = z.object({
-  pdfDataUri: z
+  invoiceDataUri: z
     .string()
     .describe(
       "A PDF invoice, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."
@@ -66,7 +66,7 @@ const extractInvoiceDataPrompt = ai.definePrompt({
   If any data is missing or not legible, leave the field blank. In the missingFields array, include the names of any fields that were difficult to extract and should be reviewed by a human.
 
   Input Invoice:
-  {{media url=pdfDataUri}}
+  {{media url=invoiceDataUri}}
   `,
 });
 

@@ -11,7 +11,7 @@ export async function processInvoice(
   }
 
   try {
-    const result = await extractInvoiceData({ pdfDataUri });
+    const result = await extractInvoiceData({ invoiceDataUri: pdfDataUri });
     if (!result || !result.facturas || result.facturas.length === 0) {
       return { data: null, error: 'No se pudieron extraer datos de la factura. Por favor, intente con otro archivo.' };
     }
