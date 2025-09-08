@@ -1,43 +1,41 @@
 #!/bin/bash
-# Este script inicializa un repositorio de Git, lo conecta a un remoto en GitHub y sube el código.
 
-# 1. Inicializa el repositorio de Git localmente (si no está ya inicializado)
+# 1. Initialize Git repo if it doesn't exist
 if [ ! -d ".git" ]; then
   git init
-  echo "Repositorio de Git inicializado."
+  echo "Git repository initialized."
 else
-  echo "El repositorio de Git ya existe."
+  echo "Git repository already exists."
 fi
 
-# 2. Añade todos los archivos al área de preparación
+# 2. Add all files to the staging area
 git add .
-echo "Todos los archivos han sido añadidos al área de preparación."
+echo "All files added to the staging area."
 
-# 3. Realiza el commit inicial
-# Comprueba si ya hay commits para no fallar si se ejecuta de nuevo
-if git rev-parse --verify HEAD >/dev/null 2>&1; then
-  git commit -m "Actualización del proyecto"
+# 3. Commit the changes
+# Check if there are any changes to commit to avoid empty commit error
+if ! git diff-index --quiet HEAD --; then
+  git commit -m "Final attempt: Forcing dependency resolution and stabilizing project"
+  echo "Commit created."
 else
-  git commit -m "Commit inicial del proyecto FacturaVision"
+  echo "No changes to commit."
 fi
-echo "Commit creado."
 
-# 4. Añade el repositorio remoto de GitHub
-# Comprueba si el remoto 'origin' ya existe
+# 4. Set or update the remote origin URL
 if git remote | grep -q 'origin'; then
   git remote set-url origin https://github.com/TheMasterPavel/Escaner-de-facturas
-  echo "La URL del remoto 'origin' ha sido actualizada."
+  echo "Remote 'origin' URL has been updated."
 else
   git remote add origin https://github.com/TheMasterPavel/Escaner-de-facturas
-  echo "Repositorio remoto 'origin' añadido."
+  echo "Remote 'origin' added."
 fi
 
-# 5. Renombra la rama actual a 'main'
+# 5. Ensure the current branch is named 'main'
 git branch -M main
-echo "Rama actual renombrada a 'main'."
+echo "Current branch ensured to be 'main'."
 
-# 6. Sube el código a la rama 'main' de GitHub (forzando la subida)
+# 6. Force push the code to the 'main' branch on GitHub
 git push --force -u origin main
 
-echo "¡Éxito! Tu código ha sido subido a GitHub."
-echo "Ahora puedes reintentar el despliegue en Vercel."
+echo "SUCCESS! Your code has been pushed to GitHub."
+echo "Vercel will now attempt a new deployment. This should be the final one."
