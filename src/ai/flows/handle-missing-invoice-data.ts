@@ -49,15 +49,17 @@ const extractInvoiceDataPrompt = ai.definePrompt({
 
 Your task is to analyze the provided PDF, identify all individual invoices, and extract the following details for each one:
 - proveedor: The name of the vendor/supplier.
-- fecha: The date of the invoice.
+- fecha: The date of the invoice in YYYY-MM-DD format.
 - concepto: A brief description of the items or services purchased.
-- importe: The total amount of the invoice.
+- importe: The **final total amount** of the invoice. Pay close attention to decimal places and ensure you are extracting the grand total, not a subtotal.
 
 If the PDF contains multiple invoices, create a separate JSON object for each.
 
-If you cannot find a specific piece of information (e.g., 'concepto' is not listed), leave the corresponding field in the JSON object as an empty string. If you cannot determine a value with confidence, mark it for human review by including the field name (e.g., "fecha") in the 'missingFields' array.
+Handle missing information:
+- If a value for a field cannot be found or read with high confidence, leave it as an empty string ("") for 'proveedor', 'fecha', and 'concepto', and use 0 for 'importe'.
+- In addition, if you are not confident about a field, you MUST add the name of that field (e.g., "importe") to the 'missingFields' array for human review.
 
-Calculate the sum of all 'importe' values for the 'total_gastos' field.
+After extracting all invoice data, calculate the sum of all 'importe' values and place it in the 'total_gastos' field.
 
 Analyze the following invoice document:
 {{media url=invoiceDataUri}}
