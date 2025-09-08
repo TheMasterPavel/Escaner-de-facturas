@@ -26,12 +26,24 @@ export async function processInvoice(
 
     return { data: responseData, error: null };
   } catch (e: any) {
-    console.error(e);
-    const errorMessage = e.message || 'Ocurrió un error al procesar la factura. Por favor, inténtelo de nuevo.';
-    // Extracting potential details from GoogleGenerativeAI errors
-    if (e.cause?.message) {
-       return { data: null, error: e.cause.message };
+    console.error('Error processing invoice:', e);
+    // Vercel/Next.js puede anidar el error original. Intentamos acceder a él.
+    const cause = e.cause || e;
+    const errorMessage = cause.message || 'Ocurrió un error desconocido al procesar la factura.';
+    
+    // Extraer un mensaje más específico si es un error de la API de Google
+    if (cause.details) {
+      try {
+        const details = JSON.parse(cause.details);
+        if (details.error?.message) {
+          return { data: null, error: `Error de la API: ${details.error.message}` };
+        }
+      } catch (parseError) {
+         // Si el detalle no es un JSON, usamos el mensaje principal.
+         return { data: null, error: errorMessage };
+      }
     }
+
     return { data: null, error: errorMessage };
   }
 }
