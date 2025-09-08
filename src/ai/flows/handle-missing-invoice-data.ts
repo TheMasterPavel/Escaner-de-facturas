@@ -58,10 +58,7 @@ const extractInvoiceDataPrompt = ai.definePrompt({
 
   Calculate the sum total of all amounts.
 
-  Return the results in a structured JSON format with the following schema:
-  ${JSON.stringify(ExtractInvoiceDataOutputSchema.shape, null, 2)}
-
-  If the PDF contains multiple scanned invoices on the same page, separate them into different entries within the JSON.
+  If the PDF contains multiple scanned invoices on the same page, separate them into different entries.
 
   If any data is missing or not legible, leave the field blank. In the missingFields array, include the names of any fields that were difficult to extract and should be reviewed by a human.
 
