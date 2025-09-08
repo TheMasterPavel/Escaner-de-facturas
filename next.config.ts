@@ -24,6 +24,12 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '10mb', // Aumentar por si los PDF son grandes
+      maxDuration: 60, // Aumentar el tiempo de espera a 60 segundos
+    },
+  },
 };
 
 export default nextConfig;
