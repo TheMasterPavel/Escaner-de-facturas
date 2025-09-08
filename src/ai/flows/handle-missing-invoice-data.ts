@@ -45,26 +45,23 @@ const extractInvoiceDataPrompt = ai.definePrompt({
   name: 'extractInvoiceDataPrompt',
   input: {schema: ExtractInvoiceDataInputSchema},
   output: {schema: ExtractInvoiceDataOutputSchema},
-  prompt: `You are an expert accounting assistant specializing in extracting data from company invoices.
+  prompt: `You are an expert accounting assistant specializing in extracting data from invoices within a PDF document.
 
-  You will receive a scanned PDF invoice, and your task is to extract the relevant information from it.
-  This includes the vendor, date, invoice number (if available), and total amount.
+Your task is to analyze the provided PDF, identify all individual invoices, and extract the following details for each one:
+- proveedor: The name of the vendor/supplier.
+- fecha: The date of the invoice.
+- concepto: A brief description of the items or services purchased.
+- importe: The total amount of the invoice.
 
-  Create a list of all expenses with the following format:
-  - Vendor
-  - Date
-  - Concept (if present)
-  - Amount
+If the PDF contains multiple invoices, create a separate JSON object for each.
 
-  Calculate the sum total of all amounts.
+If you cannot find a specific piece of information (e.g., 'concepto' is not listed), leave the corresponding field in the JSON object as an empty string. If you cannot determine a value with confidence, mark it for human review by including the field name (e.g., "fecha") in the 'missingFields' array.
 
-  If the PDF contains multiple scanned invoices on the same page, separate them into different entries.
+Calculate the sum of all 'importe' values for the 'total_gastos' field.
 
-  If any data is missing or not legible, leave the field blank. In the missingFields array, include the names of any fields that were difficult to extract and should be reviewed by a human.
-
-  Input Invoice:
-  {{media url=invoiceDataUri}}
-  `,
+Analyze the following invoice document:
+{{media url=invoiceDataUri}}
+`,
   config: {
     safetySettings: [
       {category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_ONLY_HIGH'},
