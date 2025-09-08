@@ -1,6 +1,6 @@
 {
     "functions": {
-        "app/**": {
+        "app/api/genkit/**": {
             "maxDuration": 60
         }
     }
