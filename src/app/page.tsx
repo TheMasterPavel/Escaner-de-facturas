@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import * as XLSX from "xlsx";
 import {
   Card,
   CardContent,
@@ -17,6 +18,7 @@ import {
   SidebarContent,
 } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
 import { DashboardHeader } from "@/components/dashboard-header";
 import { InvoiceUploadForm } from "@/components/invoice-upload-form";
 import { InvoiceTable } from "@/components/invoice-table";
@@ -24,7 +26,7 @@ import { Logo } from "@/components/logo";
 import { processInvoice } from "@/app/actions";
 import type { InvoiceData } from "@/lib/types";
 import { formatCurrency } from "@/lib/utils";
-import { DollarSign, AlertCircle, FileText, AlertTriangle } from "lucide-react";
+import { DollarSign, AlertCircle, FileText, AlertTriangle, Download } from "lucide-react";
 
 export default function Home() {
   const [invoiceData, setInvoiceData] = useState<InvoiceData | null>(null);
@@ -46,6 +48,31 @@ export default function Home() {
     setIsProcessing(false);
   };
   
+  const handleDownloadExcel = () => {
+    if (!invoiceData) return;
+
+    const worksheetData = invoiceData.facturas.map(invoice => ({
+      Proveedor: invoice.proveedor,
+      Fecha: invoice.fecha ? new Date(invoice.fecha).toLocaleDateString('es-ES') : 'N/A',
+      Concepto: invoice.concepto,
+      Importe: invoice.importe,
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(worksheetData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Facturas");
+    
+    // Set column widths
+    worksheet['!cols'] = [
+      { wch: 30 }, // Proveedor
+      { wch: 15 }, // Fecha
+      { wch: 50 }, // Concepto
+      { wch: 15 }, // Importe
+    ];
+
+    XLSX.writeFile(workbook, "facturas.xlsx");
+  };
+
   return (
     <SidebarProvider>
       <Sidebar>
@@ -69,7 +96,7 @@ export default function Home() {
               <CardTitle>Cargar Factura</CardTitle>
               <CardDescription>
                 Sube un archivo PDF con una o más facturas para extraer los datos automáticamente.
-              </CardDescription>
+              </</CardDescription>
             </CardHeader>
             <CardContent>
               <InvoiceUploadForm
@@ -127,11 +154,17 @@ export default function Home() {
               </div>
 
               <Card>
-                <CardHeader>
-                  <CardTitle>Facturas Extraídas</CardTitle>
-                  <CardDescription>
-                    Detalles de las facturas encontradas en el documento. Los campos marcados con <AlertTriangle className="inline h-4 w-4 text-yellow-500" /> pueden requerir revisión.
-                  </CardDescription>
+                <CardHeader className="flex items-center justify-between">
+                  <div className="space-y-1.5">
+                    <CardTitle>Facturas Extraídas</CardTitle>
+                    <CardDescription>
+                      Detalles de las facturas encontradas en el documento. Los campos marcados con <AlertTriangle className="inline h-4 w-4 text-yellow-500" /> pueden requerir revisión.
+                    </CardDescription>
+                  </div>
+                  <Button variant="outline" onClick={handleDownloadExcel}>
+                    <Download className="mr-2 h-4 w-4" />
+                    Descargar Excel
+                  </Button>
                 </CardHeader>
                 <CardContent>
                   <InvoiceTable invoices={invoiceData.facturas} />
