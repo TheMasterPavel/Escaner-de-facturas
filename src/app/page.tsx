@@ -96,7 +96,7 @@ export default function Home() {
               <CardTitle>Cargar Factura</CardTitle>
               <CardDescription>
                 Sube un archivo PDF con una o más facturas para extraer los datos automáticamente.
-              </</CardDescription>
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <InvoiceUploadForm
@@ -154,7 +154,7 @@ export default function Home() {
               </div>
 
               <Card>
-                <CardHeader className="flex items-center justify-between">
+                <CardHeader className="flex flex-row items-center justify-between">
                   <div className="space-y-1.5">
                     <CardTitle>Facturas Extraídas</CardTitle>
                     <CardDescription>
