@@ -36,8 +36,8 @@ fi
 git branch -M main
 echo "Rama actual renombrada a 'main'."
 
-# 6. Sube el código a la rama 'main' de GitHub
-git push -u origin main
+# 6. Sube el código a la rama 'main' de GitHub (forzando la subida)
+git push --force -u origin main
 
 echo "¡Éxito! Tu código ha sido subido a GitHub."
-echo "Ahora puedes continuar con el despliegue en Vercel."
+echo "Ahora puedes reintentar el despliegue en Vercel."
