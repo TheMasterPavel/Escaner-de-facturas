@@ -16,8 +16,8 @@ export async function processInvoice(
       return { data: null, error: 'No se pudieron extraer datos de la factura. Por favor, intente con otro archivo.' };
     }
     return { data: result, error: null };
-  } catch (e) {
+  } catch (e: any) {
     console.error(e);
-    return { data: null, error: 'Ocurrió un error al procesar la factura. Por favor, inténtelo de nuevo.' };
+    return { data: null, error: e.message || 'Ocurrió un error al procesar la factura. Por favor, inténtelo de nuevo.' };
   }
 }
