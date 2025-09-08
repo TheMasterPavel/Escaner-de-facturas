@@ -30,22 +30,29 @@ export async function processInvoice(
 
     let errorMessage = 'Ocurrió un error desconocido al procesar la factura.';
     
-    // Check for Vercel/Next.js specific error structures
+    // Check for Vercel/Next.js specific error structures or standard errors
     if (e.message) {
       errorMessage = e.message;
+    } else if (typeof e === 'string') {
+      errorMessage = e;
     }
     
     // Attempt to parse nested error details from Google API or other causes
-    if (e.cause) {
+    let cause = e.cause;
+    if (cause) {
+      // Handle potential nested causes
+      while (cause.cause) {
+        cause = cause.cause;
+      }
       try {
         // Handle nested stringified JSON
-        if (typeof e.cause === 'string') {
-          const parsedCause = JSON.parse(e.cause);
+        if (typeof cause === 'string') {
+          const parsedCause = JSON.parse(cause);
           if (parsedCause.error?.message) {
             errorMessage = `Error de la API: ${parsedCause.error.message}`;
           }
-        } else if (e.cause.message) {
-           errorMessage = e.cause.message;
+        } else if (cause.message) {
+           errorMessage = cause.message;
         }
       } catch (parseError) {
          // If parsing fails, stick with the last known error message.
@@ -58,6 +65,6 @@ export async function processInvoice(
        errorMessage = e.details;
     }
 
-    return { data: null, error: errorMessage };
+    return { data: null, error: `Error en el servidor: ${errorMessage}` };
   }
 }
