@@ -1,11 +1,8 @@
 import {defineNextJsHandler} from '@genkit-ai/next';
-import '@/ai/genkit';
-import * as handleMissingInvoiceData from '@/ai/flows/handle-missing-invoice-data';
+import '@/ai/index';
 import {NextRequest} from 'next/server';
 
-const handler = defineNextJsHandler({
-  flows: [handleMissingInvoiceData],
-});
+const handler = defineNextJsHandler();
 
 export async function POST(req: NextRequest) {
   return handler(req);
