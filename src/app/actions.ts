@@ -24,9 +24,10 @@ export async function processInvoice(
     };
 
     return { data: responseData, error: null };
-  } catch (e: any) {
+  } catch (e) {
     console.error('[SERVER_ACTION_ERROR]', e);
-    const errorMessage = e instanceof Error ? e.message : String(e);
+    // This is a robust way to get an error message, regardless of the error type.
+    const errorMessage = e instanceof Error ? e.message : (e ? String(e) : 'Ocurrió un error desconocido');
     return { data: null, error: `Error en el servidor: ${errorMessage}` };
   }
 }
