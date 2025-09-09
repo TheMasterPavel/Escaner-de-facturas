@@ -43,10 +43,10 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
           </TableHeader>
           <TableBody>
             {invoices.map((invoice, index) => (
-              <TableRow key={`${invoice.proveedor || 'inv'}-${index}`}>
+              <TableRow key={`${invoice?.proveedor || 'inv'}-${index}`}>
                 <TableCell className="font-medium">
                   <div className="flex items-center gap-2">
-                    {invoice.proveedor || "N/A"}
+                    {invoice?.proveedor || "N/A"}
                     {needsReview(invoice, "proveedor") && (
                       <Tooltip>
                         <TooltipTrigger>
@@ -61,7 +61,7 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-2">
-                    {invoice.fecha ? new Date(invoice.fecha).toLocaleDateString('es-ES') : "N/A"}
+                    {invoice?.fecha ? new Date(invoice.fecha).toLocaleDateString('es-ES') : "N/A"}
                      {needsReview(invoice, "fecha") && (
                       <Tooltip>
                         <TooltipTrigger>
@@ -76,7 +76,7 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-2">
-                    {invoice.concepto || "N/A"}
+                    {invoice?.concepto || "N/A"}
                      {needsReview(invoice, "concepto") && (
                       <Tooltip>
                         <TooltipTrigger>
@@ -91,7 +91,7 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end gap-2">
-                    {invoice.importe != null ? formatCurrency(invoice.importe) : "N/A"}
+                    {invoice?.importe != null ? formatCurrency(invoice.importe) : "N/A"}
                      {needsReview(invoice, "importe") && (
                       <Tooltip>
                         <TooltipTrigger>

@@ -16,7 +16,6 @@ export async function processInvoice(
       return { data: null, error: 'No se pudieron extraer datos de la factura. Por favor, intente con otro archivo.' };
     }
     
-    // Calculate total expenses on the server from the returned invoices
     const total_gastos = result.facturas.reduce((sum, invoice) => sum + (invoice.importe || 0), 0);
     
     const responseData: InvoiceResponse = {
@@ -27,19 +26,8 @@ export async function processInvoice(
     return { data: responseData, error: null };
   } catch (e: any) {
     console.error('[SERVER_ACTION_ERROR]', e);
-
-    // Robust error message extraction
-    let errorMessage = 'Ocurrió un error desconocido al procesar la factura.';
-    if (e) {
-        if (typeof e.message === 'string') {
-            errorMessage = e.message;
-        } else if (typeof e.details === 'string') {
-            errorMessage = e.details;
-        } else if (typeof e === 'string') {
-            errorMessage = e;
-        }
-    }
-
+    // Robust and simple error handling.
+    const errorMessage = e instanceof Error ? e.message : String(e);
     return { data: null, error: `Error en el servidor: ${errorMessage}` };
   }
 }
