@@ -11,6 +11,6 @@ export const POST = async (req: NextRequest) => {
   return handler(req);
 };
 
-export const config = {
+export const routeSegmentConfig = {
   maxDuration: 120,
 };
