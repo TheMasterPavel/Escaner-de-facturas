@@ -1,3 +1,4 @@
+'use server';
 import defineNextJsHandler from '@genkit-ai/next';
 import '@/ai/genkit';
 import * as handleMissingInvoiceData from '@/ai/flows/handle-missing-invoice-data';
