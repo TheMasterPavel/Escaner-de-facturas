@@ -26,7 +26,7 @@ import { Logo } from "@/components/logo";
 import { processInvoice } from "@/app/actions";
 import type { InvoiceResponse } from "@/lib/types";
 import { formatCurrency } from "@/lib/utils";
-import { DollarSign, AlertCircle, FileText, AlertTriangle, Download } from "lucide-react";
+import { DollarSign, AlertCircle, FileText, AlertTriangle, Download, ShieldAlert } from "lucide-react";
 
 export default function Home() {
   const [invoiceData, setInvoiceData] = useState<InvoiceResponse | null>(null);
@@ -73,6 +73,10 @@ export default function Home() {
     XLSX.writeFile(workbook, "facturas.xlsx");
   };
 
+  const invoicesForReview = invoiceData?.facturas.filter(
+    (invoice) => invoice.missingFields && invoice.missingFields.length > 0
+  ).length || 0;
+
   return (
     <SidebarProvider>
       <Sidebar>
@@ -118,7 +122,7 @@ export default function Home() {
 
           {invoiceData && (
             <div className="space-y-6">
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
@@ -148,6 +152,18 @@ export default function Home() {
                     </div>
                     <p className="text-xs text-muted-foreground">
                       Número de facturas individuales detectadas
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Facturas para Revisar</CardTitle>
+                    <ShieldAlert className="h-4 w-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">{invoicesForReview}</div>
+                    <p className="text-xs text-muted-foreground">
+                      Facturas con datos de baja confianza
                     </p>
                   </CardContent>
                 </Card>
@@ -182,7 +198,7 @@ export default function Home() {
 function ResultsSkeleton() {
   return (
     <div className="space-y-6">
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
@@ -201,6 +217,18 @@ function ResultsSkeleton() {
               Facturas Encontradas
             </CardTitle>
             <FileText className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+             <Skeleton className="h-8 w-1/4" />
+            <Skeleton className="mt-2 h-4 w-3/4" />
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Facturas para Revisar
+            </CardTitle>
+            <ShieldAlert className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
              <Skeleton className="h-8 w-1/4" />
