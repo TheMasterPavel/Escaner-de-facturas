@@ -1,5 +1,5 @@
 
-import {defineNextJsHandler} from '@genkit-ai/next';
+import defineNextJsHandler from '@genkit-ai/next';
 import '@/ai/genkit';
 import '@/ai/flows/handle-missing-invoice-data';
 
