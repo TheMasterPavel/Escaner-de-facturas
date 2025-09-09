@@ -12,10 +12,11 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@genkit-ai/firebase": "1.14.1",
-    "@genkit-ai/googleai": "1.14.1",
-    "@genkit-ai/next": "1.14.1",
+    "@genkit-ai/firebase": "^1.14.1",
+    "@genkit-ai/googleai": "^1.14.1",
+    "@genkit-ai/next": "^1.14.1",
     "@hookform/resolvers": "3.9.0",
+    "@opentelemetry/exporter-jaeger": "^1.25.0",
     "@radix-ui/react-accordion": "1.2.0",
     "@radix-ui/react-alert-dialog": "1.1.1",
     "@radix-ui/react-avatar": "1.1.0",
@@ -42,7 +43,7 @@
     "date-fns": "3.6.0",
     "dotenv": "16.4.5",
     "embla-carousel-react": "8.1.7",
-    "genkit": "1.14.1",
+    "genkit": "^1.14.1",
     "lucide-react": "0.417.0",
     "next": "14.2.4",
     "react": "18.3.1",
@@ -60,7 +61,7 @@
     "@types/react": "18.3.3",
     "@types/react-dom": "18.3.0",
     "@types/xlsx": "0.0.36",
-    "genkit-cli": "1.14.1",
+    "genkit-cli": "^1.14.1",
     "postcss": "8.4.39",
     "tailwindcss": "3.4.6",
     "typescript": "5.5.4"
