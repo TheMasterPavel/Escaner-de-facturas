@@ -8,7 +8,7 @@
     "genkit:watch": "genkit start -- tsx --watch src/ai/index.ts",
     "next:build": "next build",
     "build": "npm-run-all genkit:compile next:build",
-    "genkit:compile": "genkit compile src/ai/index.ts src/ai/compiled",
+    "genkit:compile": "yes | genkit compile src/ai/index.ts src/ai/compiled",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit"
