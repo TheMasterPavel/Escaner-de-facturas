@@ -27,7 +27,8 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
   const needsReview = (invoice: Invoice, field: string) => {
     // The AI flow returns lowercased field names
     const fieldKey = field.toLowerCase() as keyof Invoice;
-    return invoice.missingFields?.some(missing => missing.toLowerCase() === fieldKey);
+    // Safely check if missing is a string before calling toLowerCase()
+    return invoice.missingFields?.some(missing => typeof missing === 'string' && missing.toLowerCase() === fieldKey);
   }
 
   return (
