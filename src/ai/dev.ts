@@ -1,1 +1,2 @@
-import '@/ai/flows/handle-missing-invoice-data.ts';
+// This file is the entrypoint for Genkit's development server.
+import './index';

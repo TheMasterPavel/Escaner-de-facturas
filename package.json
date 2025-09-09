@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 9002 --hostname 0.0.0.0",
-    "genkit:dev": "genkit start -- tsx src/ai/dev.ts",
-    "genkit:watch": "genkit start -- tsx --watch src/ai/dev.ts",
+    "genkit:dev": "genkit start -- tsx src/ai/index.ts",
+    "genkit:watch": "genkit start -- tsx --watch src/ai/index.ts",
     "next:build": "next build",
     "build": "npm-run-all genkit:compile next:build",
-    "genkit:compile": "genkit compile -s src/ai/dev.ts -o src/ai/compiled",
+    "genkit:compile": "genkit compile -s src/ai/index.ts -o src/ai/compiled",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit"
