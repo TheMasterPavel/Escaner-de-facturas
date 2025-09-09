@@ -16,7 +16,7 @@ export async function processInvoice(
       return { data: null, error: 'No se pudieron extraer datos de la factura. Por favor, intente con otro archivo.' };
     }
     
-    const total_gastos = result.facturas.reduce((sum, invoice) => sum + (invoice.importe || 0), 0);
+    const total_gastos = result.facturas.reduce((sum, invoice) => sum + (invoice?.importe || 0), 0);
     
     const responseData: InvoiceResponse = {
       facturas: result.facturas,
@@ -27,7 +27,7 @@ export async function processInvoice(
   } catch (e) {
     console.error('[SERVER_ACTION_ERROR]', e);
     // This is a robust way to get an error message, regardless of the error type.
-    const errorMessage = e instanceof Error ? e.message : (e ? String(e) : 'Ocurrió un error desconocido');
+    const errorMessage = e instanceof Error ? e.message : (e ? String(e) : 'Ocurrió un error desconocido durante el procesamiento.');
     return { data: null, error: `Error en el servidor: ${errorMessage}` };
   }
 }

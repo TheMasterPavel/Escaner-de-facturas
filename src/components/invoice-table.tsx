@@ -25,12 +25,10 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
   const headers = ["Proveedor", "Fecha", "Concepto", "Importe"];
 
   const needsReview = (invoice: Invoice | undefined, fieldName: string) => {
-    // If invoice is undefined, there's nothing to review.
     if (!invoice || !Array.isArray(invoice.missingFields)) {
       return false;
     }
     const lowerCaseFieldName = fieldName.toLowerCase();
-    // Ensure the item in the array is a string before calling toLowerCase()
     return invoice.missingFields.some(
       (missing) => typeof missing === 'string' && missing.toLowerCase() === lowerCaseFieldName
     );
@@ -65,7 +63,7 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-2">
-                    {invoice?.fecha ? new Date(invoice.fecha).toLocaleDateString('es-ES') : "N/A"}
+                    {invoice?.fecha ? new Date(invoice.fecha).toLocaleDateString('es-ES', { timeZone: 'UTC' }) : "N/A"}
                      {needsReview(invoice, "fecha") && (
                       <Tooltip>
                         <TooltipTrigger>
