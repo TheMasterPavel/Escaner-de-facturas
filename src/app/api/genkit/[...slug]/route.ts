@@ -4,13 +4,11 @@ import '@/ai/genkit';
 import * as handleMissingInvoiceData from '@/ai/flows/handle-missing-invoice-data';
 import {NextRequest} from 'next/server';
 
-export const POST = async (req: NextRequest) => {
+export async function POST(req: NextRequest) {
   const handler = defineNextJsHandler({
     flows: [handleMissingInvoiceData],
   });
   return handler(req);
 };
 
-export const routeSegmentConfig = {
-  maxDuration: 120,
-};
+export const maxDuration = 120;
