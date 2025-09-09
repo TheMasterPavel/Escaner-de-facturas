@@ -6,7 +6,9 @@
     "dev": "next dev -p 9002 --hostname 0.0.0.0",
     "genkit:dev": "genkit start -- tsx src/ai/dev.ts",
     "genkit:watch": "genkit start -- tsx --watch src/ai/dev.ts",
-    "build": "next build",
+    "next:build": "next build",
+    "build": "npm-run-all genkit:compile next:build",
+    "genkit:compile": "genkit compile -s src/ai/dev.ts -o src/ai/compiled",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit"
@@ -45,6 +47,7 @@
     "genkit": "1.14.1",
     "lucide-react": "0.417.0",
     "next": "14.2.5",
+    "npm-run-all": "^4.1.5",
     "patch-package": "8.0.0",
     "react": "18.3.1",
     "react-day-picker": "8.10.1",
