@@ -25,8 +25,8 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
   const headers = ["Proveedor", "Fecha", "Concepto", "Importe"];
 
   const needsReview = (invoice: Invoice, field: string) => {
+    if (!invoice) return false;
     const fieldKey = field.toLowerCase();
-    // Fully safe check: ensure missingFields exists, is an array, and the item is a string before calling toLowerCase.
     return Array.isArray(invoice.missingFields) && invoice.missingFields.some(missing => 
         typeof missing === 'string' && missing.toLowerCase() === fieldKey
     );
@@ -43,7 +43,7 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
           </TableHeader>
           <TableBody>
             {invoices.map((invoice, index) => (
-              <TableRow key={`${invoice?.proveedor || 'inv'}-${index}`}>
+              <TableRow key={`invoice-${index}`}>
                 <TableCell className="font-medium">
                   <div className="flex items-center gap-2">
                     {invoice?.proveedor || "N/A"}

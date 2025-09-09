@@ -26,7 +26,6 @@ export async function processInvoice(
     return { data: responseData, error: null };
   } catch (e: any) {
     console.error('[SERVER_ACTION_ERROR]', e);
-    // Robust and simple error handling.
     const errorMessage = e instanceof Error ? e.message : String(e);
     return { data: null, error: `Error en el servidor: ${errorMessage}` };
   }
