@@ -81,6 +81,13 @@ const extractInvoiceDataFlow = ai.defineFlow(
   },
   async input => {
     const {output} = await extractInvoiceDataPrompt(input);
-    return output!;
+    
+    // If the model returns no valid output, return an empty array of invoices
+    // instead of letting the flow fail.
+    if (!output) {
+      return { facturas: [] };
+    }
+    
+    return output;
   }
 );
