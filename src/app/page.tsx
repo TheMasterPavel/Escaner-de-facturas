@@ -96,7 +96,7 @@ export default function Home() {
               <CardTitle>Cargar Factura</CardTitle>
               <CardDescription>
                 Sube un archivo PDF con una o más facturas para extraer los datos automáticamente.
-              </cardDescription>
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <InvoiceUploadForm
