@@ -33,6 +33,12 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
       (missing) => typeof missing === 'string' && missing.toLowerCase() === lowerCaseFieldName
     );
   };
+  
+  const formatDate = (dateString: string) => {
+    if (!dateString || !/^\d{4}-\d{2}-\d{2}$/.test(dateString)) return "N/A";
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
+  };
 
   return (
     <TooltipProvider>
@@ -63,7 +69,7 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-2">
-                    {invoice?.fecha ? new Date(invoice.fecha).toLocaleDateString('es-ES', { timeZone: 'UTC' }) : "N/A"}
+                    {formatDate(invoice?.fecha)}
                      {needsReview(invoice, "fecha") && (
                       <Tooltip>
                         <TooltipTrigger>

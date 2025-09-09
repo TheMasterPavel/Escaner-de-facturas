@@ -50,10 +50,16 @@ export default function Home() {
   
   const handleDownloadExcel = () => {
     if (!invoiceData) return;
+    
+    const formatDateForExcel = (dateString: string) => {
+      if (!dateString) return 'N/A';
+      const [year, month, day] = dateString.split('-');
+      return `${day}/${month}/${year}`;
+    };
 
     const worksheetData = invoiceData.facturas.map(invoice => ({
       Proveedor: invoice.proveedor,
-      Fecha: invoice.fecha ? new Date(invoice.fecha).toLocaleDateString('es-ES') : 'N/A',
+      Fecha: formatDateForExcel(invoice.fecha),
       Concepto: invoice.concepto,
       Importe: invoice.importe,
     }));
