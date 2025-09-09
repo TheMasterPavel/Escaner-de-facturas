@@ -73,7 +73,7 @@ Analyze the following invoice document:
   },
 });
 
-const extractInvoiceDataFlow = ai.defineFlow(
+export const extractInvoiceDataFlow = ai.defineFlow(
   {
     name: 'extractInvoiceDataFlow',
     inputSchema: ExtractInvoiceDataInputSchema,
