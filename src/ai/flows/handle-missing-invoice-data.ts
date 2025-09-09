@@ -9,6 +9,7 @@
  */
 
 import {ai} from '@/ai/genkit';
+import {googleAI} from '@genkit-ai/googleai';
 import {z} from 'zod';
 
 const ExtractInvoiceDataInputSchema = z.object({
@@ -44,6 +45,7 @@ const extractInvoiceDataPrompt = ai.definePrompt({
   name: 'extractInvoiceDataPrompt',
   input: {schema: ExtractInvoiceDataInputSchema},
   output: {schema: ExtractInvoiceDataOutputSchema},
+  model: googleAI('gemini-1.5-flash-latest'),
   prompt: `You are an expert accounting assistant specializing in extracting data from invoices within a PDF document.
 
 Your task is to analyze the provided PDF, identify all individual invoices, and extract the following details for each one:
