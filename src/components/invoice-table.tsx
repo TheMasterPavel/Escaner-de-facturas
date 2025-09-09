@@ -21,16 +21,18 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
   if (!invoices || invoices.length === 0) {
     return <p className="text-muted-foreground">No hay datos de facturas para mostrar.</p>;
   }
-  
+
   const headers = ["Proveedor", "Fecha", "Concepto", "Importe"];
 
-  const needsReview = (invoice: Invoice, field: string) => {
-    if (!invoice) return false;
-    const fieldKey = field.toLowerCase();
-    return Array.isArray(invoice.missingFields) && invoice.missingFields.some(missing => 
-        typeof missing === 'string' && missing.toLowerCase() === fieldKey
+  const needsReview = (invoice: Invoice, fieldName: string) => {
+    if (!invoice || !Array.isArray(invoice.missingFields)) {
+      return false;
+    }
+    const lowerCaseFieldName = fieldName.toLowerCase();
+    return invoice.missingFields.some(
+      (missing) => typeof missing === 'string' && missing.toLowerCase() === lowerCaseFieldName
     );
-  }
+  };
 
   return (
     <TooltipProvider>
