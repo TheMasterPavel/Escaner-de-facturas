@@ -9,6 +9,6 @@ export async function POST(req: NextRequest) {
     flows: [handleMissingInvoiceData],
   });
   return handler(req);
-};
+}
 
 export const maxDuration = 120;
