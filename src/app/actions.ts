@@ -28,41 +28,16 @@ export async function processInvoice(
   } catch (e: any) {
     console.error('[SERVER_ACTION_ERROR]', e);
 
+    // Robust error message extraction
     let errorMessage = 'Ocurrió un error desconocido al procesar la factura.';
-    
-    // Check for Vercel/Next.js specific error structures or standard errors
-    if (e.message) {
-      errorMessage = e.message;
-    } else if (typeof e === 'string') {
-      errorMessage = e;
-    }
-    
-    // Attempt to parse nested error details from Google API or other causes
-    let cause = e.cause;
-    if (cause) {
-      // Handle potential nested causes
-      while (cause.cause) {
-        cause = cause.cause;
-      }
-      try {
-        // Handle nested stringified JSON
-        if (typeof cause === 'string') {
-          const parsedCause = JSON.parse(cause);
-          if (parsedCause.error?.message) {
-            errorMessage = `Error de la API: ${parsedCause.error.message}`;
-          }
-        } else if (cause.message) {
-           errorMessage = cause.message;
+    if (e) {
+        if (typeof e.message === 'string') {
+            errorMessage = e.message;
+        } else if (typeof e.details === 'string') {
+            errorMessage = e.details;
+        } else if (typeof e === 'string') {
+            errorMessage = e;
         }
-      } catch (parseError) {
-         // If parsing fails, stick with the last known error message.
-         console.error('[ERROR_PARSING_CAUSE]', parseError);
-      }
-    }
-    
-    // Check for a specific structure often seen in Genkit/Google AI errors
-    if (e.details) {
-       errorMessage = e.details;
     }
 
     return { data: null, error: `Error en el servidor: ${errorMessage}` };

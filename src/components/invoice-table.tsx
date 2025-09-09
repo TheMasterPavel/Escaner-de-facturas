@@ -25,10 +25,11 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
   const headers = ["Proveedor", "Fecha", "Concepto", "Importe"];
 
   const needsReview = (invoice: Invoice, field: string) => {
-    // The AI flow returns lowercased field names
-    const fieldKey = field.toLowerCase() as keyof Invoice;
-    // Safely check if missing is a string before calling toLowerCase()
-    return invoice.missingFields?.some(missing => typeof missing === 'string' && missing.toLowerCase() === fieldKey);
+    const fieldKey = field.toLowerCase();
+    // Fully safe check: ensure missingFields exists, is an array, and the item is a string before calling toLowerCase.
+    return Array.isArray(invoice.missingFields) && invoice.missingFields.some(missing => 
+        typeof missing === 'string' && missing.toLowerCase() === fieldKey
+    );
   }
 
   return (
@@ -42,7 +43,7 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
           </TableHeader>
           <TableBody>
             {invoices.map((invoice, index) => (
-              <TableRow key={`${invoice.proveedor}-${index}`}>
+              <TableRow key={`${invoice.proveedor || 'inv'}-${index}`}>
                 <TableCell className="font-medium">
                   <div className="flex items-center gap-2">
                     {invoice.proveedor || "N/A"}
