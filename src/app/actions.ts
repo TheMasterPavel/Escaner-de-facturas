@@ -1,6 +1,6 @@
 'use server';
 
-import {extractInvoiceData} from '@/ai/flows/handle-missing-invoice-data';
+import {extractInvoiceData} from '@/ai/flows/extract-invoice-data';
 import type {InvoiceData, InvoiceResponse} from '@/lib/types';
 
 export async function processInvoice(
