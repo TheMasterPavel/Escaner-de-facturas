@@ -14,11 +14,11 @@ echo "All files added to the staging area."
 
 # 3. Commit the changes
 # Check if there are any changes to commit to avoid empty commit error
-if ! git diff-index --quiet HEAD --; then
+if git diff-index --quiet HEAD --; then
+  echo "No changes to commit."
+else
   git commit -m "Final attempt: Forcing dependency resolution and stabilizing project"
   echo "Commit created."
-else
-  echo "No changes to commit."
 fi
 
 # 4. Set or update the remote origin URL
