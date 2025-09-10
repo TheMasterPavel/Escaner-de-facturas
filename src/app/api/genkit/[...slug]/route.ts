@@ -4,7 +4,7 @@ import { handleMissingInvoiceDataFlow } from '@/ai/flows/handle-missing-invoice-
 
 export const maxDuration = 120;
 
-export const POST = defineNextJsHandler([
+export const POST = defineNextJsHandler(...[
   extractInvoiceDataFlow,
   handleMissingInvoiceDataFlow
 ]);
