@@ -1,2 +1,3 @@
+'use server';
 import './genkit';
-import './flows/handle-missing-invoice-data';
+import './flows/extract-invoice-data';
